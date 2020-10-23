@@ -31,17 +31,12 @@ public class FuncionarioController {
 		return ResponseEntity.ok(funcionarioService.getAll());
 	}
 	
-	@GetMapping("/inner")
-	public ResponseEntity<?> getInner(){
-		return ResponseEntity.ok(funcionarioService.getInnerJoin());
-	}
-	
-	@GetMapping("/cod/{codMatricula}")
+	@GetMapping(path="/cod/{codMatricula}")
 	public Funcionario getMatricula(@PathVariable String codMatricula){
 		return funcionarioService.getByMatricula(codMatricula);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping(path="/{id}")
 	public ResponseEntity<?> get(@PathVariable Integer id) {
 		return ResponseEntity.ok(funcionarioService.getbyId(id));
 	}
@@ -51,13 +46,13 @@ public class FuncionarioController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(funcionarioService.create(funcionario));
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping(path="/{id}")
 	public ResponseEntity<?> put(@PathVariable Integer id, @RequestBody Funcionario funcionario) {
 		Funcionario funcionarioAtualizado = funcionarioService.update(id, funcionario);
 		return ResponseEntity.ok(funcionarioAtualizado);
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping(path="/{id}")
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
 		boolean response = funcionarioService.delete(id);
 		if(response) {		
