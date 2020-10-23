@@ -1,12 +1,12 @@
 package com.dois.pack.api.controllers;
 
-
-
+import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dois.pack.api.models.HorarioDetalhes;
 import com.dois.pack.api.services.HorarioDetalhesService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping({ "/horario_detalhes" })
 public class HorarioDetalhesController {
@@ -27,34 +29,42 @@ public class HorarioDetalhesController {
 	@Autowired
 	HorarioDetalhesService horarioDetalhesService;
 
-	@GetMapping
-	public ResponseEntity<?> getAll() {
+	@ApiOperation("Retorna todas as relações Horário-Detalhes")
+	@GetMapping(produces= {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<List<HorarioDetalhes>> getAll() {
 		return ResponseEntity.ok(horarioDetalhesService.getAll());
 	}
 
-	@GetMapping(path="/{id}")
-	public ResponseEntity<?> get(@PathVariable Integer id) {
-		return ResponseEntity.ok(horarioDetalhesService.getbyId(id));
+	@ApiOperation("Retorna uma relação Horário-Detalhes, baseando-se em seu id")
+	@GetMapping(path="/{id}", produces= {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<HorarioDetalhes> get(@PathVariable Integer id) {
+		HorarioDetalhes horarioDetalhes = horarioDetalhesService.getbyId(id).get();
+		return ResponseEntity.ok(horarioDetalhes);
 	}
 
-	@PostMapping
-	public ResponseEntity<?> create(@Valid @RequestBody HorarioDetalhes horarioDetalhes) {
+	@ApiOperation("Permite cadastrar uma nova relação Horário-Detalhes")
+	@PostMapping(consumes= {MediaType.APPLICATION_JSON_VALUE},
+						produces= {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<HorarioDetalhes> create(@Valid @RequestBody HorarioDetalhes horarioDetalhes) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(horarioDetalhesService.create(horarioDetalhes));
 	}
 
-	@PutMapping(path="/{id}")
-	public ResponseEntity<?> put(@PathVariable Integer id, @RequestBody HorarioDetalhes horarioDetalhes) {
+	@ApiOperation("Pemite atualizar uma relação Horário-Detalhes já cadastrada, baseando-se em seu id")
+	@PutMapping(path="/{id}", consumes= {MediaType.APPLICATION_JSON_VALUE},
+										produces= {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<HorarioDetalhes> put(@PathVariable Integer id, @RequestBody HorarioDetalhes horarioDetalhes) {
 		HorarioDetalhes horarioAtualizado = horarioDetalhesService.update(id, horarioDetalhes);
 		return ResponseEntity.ok(horarioAtualizado);
 	}
 
+	@ApiOperation("Permite apagr uma relação Horário-Detalhes")
 	@DeleteMapping(path="/{id}")
-	public ResponseEntity<?> delete(@PathVariable Integer id) {
+	public ResponseEntity<String> delete(@PathVariable Integer id) {
 		boolean response = horarioDetalhesService.delete(id);
 		if(response) {		
-			return ResponseEntity.ok("Horario apagado com sucesso!");
+			return ResponseEntity.ok("Relação Horário-Detalhes apagada com sucesso!");
 		} else {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Relação Horário-Detalhes não encontrada");
 		}
 	}
 }
