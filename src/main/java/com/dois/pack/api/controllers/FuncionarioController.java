@@ -53,7 +53,7 @@ public class FuncionarioController {
 
 	@ApiOperation("Permite cadastrar um novo funcionário")
 	@PostMapping(consumes= {MediaType.APPLICATION_JSON_VALUE},
-									produces= {MediaType.APPLICATION_JSON_VALUE} )
+										produces= {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<Funcionario> create(@Valid @RequestBody Funcionario funcionario) throws SameCpfException {
 		return ResponseEntity.status(HttpStatus.CREATED).body(funcionarioService.create(funcionario));
 	}
