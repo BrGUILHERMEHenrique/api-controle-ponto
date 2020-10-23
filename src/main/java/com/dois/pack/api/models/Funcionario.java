@@ -3,7 +3,6 @@ package com.dois.pack.api.models;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,7 +47,7 @@ public class Funcionario implements Serializable {
 	@Column(name = "telefone", length = 11)
 	private String telefone;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name = "id_empresa")
 	private Empresa idEmpresa;
 

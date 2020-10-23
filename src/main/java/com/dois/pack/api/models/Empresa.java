@@ -34,6 +34,25 @@ public class Empresa implements Serializable {
 	@Column(name = "cnpj", length = 14)
 	@Size(min = 14, max = 14)
 	private String cnpj;
+	
+
+	public Empresa() {
+		super();
+	}
+
+	public Empresa(Integer id, @NotNull String codEmpresa, @NotNull @Size(min = 1, max = 100) String razaoSocial,
+			@NotNull @Size(min = 14, max = 14) String cnpj) {
+		super();
+		this.id = id;
+		this.codEmpresa = codEmpresa;
+		this.razaoSocial = razaoSocial;
+		this.cnpj = cnpj;
+	}
+
+	public Empresa(Integer id) {
+		super();
+		this.id = id;
+	}
 
 	public String getCodEmpresa() {
 		return codEmpresa;
