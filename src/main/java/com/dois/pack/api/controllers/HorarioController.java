@@ -29,7 +29,7 @@ public class HorarioController {
 		return ResponseEntity.ok(horarioService.getAll());
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping(path="/{id}")
 	public ResponseEntity<?> get(@PathVariable Integer id) {
 		return ResponseEntity.ok(horarioService.getbyId(id));
 	}
@@ -39,13 +39,13 @@ public class HorarioController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(horarioService.create(horario));
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping(path="/{id}")
 	public ResponseEntity<?> put(@PathVariable Integer id, @RequestBody Horario horario) {
 		Horario horarioAtualizado = horarioService.update(id, horario);
 		return ResponseEntity.ok(horarioAtualizado);
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping(path="/{id}")
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
 		boolean response = horarioService.delete(id);
 		if(response) {		

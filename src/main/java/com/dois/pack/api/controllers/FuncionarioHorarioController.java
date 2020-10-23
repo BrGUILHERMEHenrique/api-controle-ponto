@@ -29,11 +29,11 @@ public class FuncionarioHorarioController {
 		return ResponseEntity.ok(funcionarioHorarioService.getAll());
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping(path="/{id}")
 	public ResponseEntity<?> get(@PathVariable Integer id) {
 		return ResponseEntity.ok(funcionarioHorarioService.getbyId(id));
 	}
-	@GetMapping("/idFuncionario/{idFuncionario}")
+	@GetMapping(path="/idFuncionario/{idFuncionario}")
 	public ResponseEntity<?> getWithIdFuncionario(@PathVariable Integer idFuncionario){
 		return ResponseEntity.ok(funcionarioHorarioService.getWithIdFuncionario(idFuncionario));
 	}
@@ -42,13 +42,13 @@ public class FuncionarioHorarioController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(funcionarioHorarioService.create(funcionarioHorario));
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping(path="/{id}")
 	public ResponseEntity<?> put(@PathVariable Integer id, @RequestBody FuncionarioHorario funcionarioHorario) {
 		FuncionarioHorario funcionarioHorarioAtualizado = funcionarioHorarioService.update(id, funcionarioHorario);
 		return ResponseEntity.ok(funcionarioHorarioAtualizado);
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping(path="/{id}")
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
 		boolean response = funcionarioHorarioService.delete(id);
 		if(response) {		
