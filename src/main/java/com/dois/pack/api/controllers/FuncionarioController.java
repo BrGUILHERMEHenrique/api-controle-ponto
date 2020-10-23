@@ -31,11 +31,6 @@ public class FuncionarioController {
 		return ResponseEntity.ok(funcionarioService.getAll());
 	}
 	
-	@GetMapping("/inner")
-	public ResponseEntity<?> getInner(){
-		return ResponseEntity.ok(funcionarioService.getInnerJoin());
-	}
-	
 	@GetMapping("/cod/{codMatricula}")
 	public Funcionario getMatricula(@PathVariable String codMatricula){
 		return funcionarioService.getByMatricula(codMatricula);
