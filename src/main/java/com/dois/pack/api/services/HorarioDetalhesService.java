@@ -5,6 +5,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.dois.pack.api.exceptions.EmptyHourException;
 import com.dois.pack.api.models.HorarioDetalhes;
 import com.dois.pack.api.repositorys.HorarioDetalhesRepository;
 
@@ -15,7 +17,15 @@ public class HorarioDetalhesService {
 	HorarioDetalhesRepository horarioDetalhesRepository;
 	
 	@Transactional
-	public HorarioDetalhes create(HorarioDetalhes horarioDetalhes) {
+	public HorarioDetalhes create(HorarioDetalhes horarioDetalhes) throws EmptyHourException {
+		if(!horarioDetalhes.getFolga()) {
+			if(horarioDetalhes.getEntrada1() == null || 
+					horarioDetalhes.getEntrada2() == null || 
+						horarioDetalhes.getSaida1() == null ||
+							horarioDetalhes.getSaida2() == null) {
+			throw new EmptyHourException();
+			}
+		}
 		return horarioDetalhesRepository.save(horarioDetalhes);
 	}
 	

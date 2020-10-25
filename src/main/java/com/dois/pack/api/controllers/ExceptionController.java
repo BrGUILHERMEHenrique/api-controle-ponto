@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.dois.pack.api.exceptions.EmptyHourException;
 import com.dois.pack.api.exceptions.SameCnpjException;
 import com.dois.pack.api.exceptions.SameCpfException;
 
@@ -53,6 +54,13 @@ public class ExceptionController {
 		String msg = "O dado solicitado não foi encontrado, por favor verifique o mesmo";
 		headers.add("message", msg);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers).body(msg);
+	}
+	
+	@ExceptionHandler(EmptyHourException.class)
+	public ResponseEntity<?> emptyHours(EmptyHourException excception){
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("message", excception.getMsg());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).body(excception.getMsg());
 	}
 
 }
