@@ -41,19 +41,19 @@ public class HorarioDetalhes implements Serializable {
 	@Column(name = "codigo_dia")
 	private Integer codigoDia;
 	
-	@NotNull
+
 	@Column(name = "entrada_1")
 	private LocalTime entrada1;
 	
-	@NotNull
+
 	@Column(name = "entrada_2")
 	private LocalTime entrada2;
 	
-	@NotNull
+
 	@Column(name = "saida_1")
 	private LocalTime saida1;
 	
-	@NotNull
+
 	@Column(name = "saida_2")
 	private LocalTime saida2;
 
