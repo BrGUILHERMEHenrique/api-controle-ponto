@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.dois.pack.api.exceptions.EmptyHourException;
 import com.dois.pack.api.exceptions.SameCnpjException;
 import com.dois.pack.api.exceptions.SameCpfException;
+import com.dois.pack.api.exceptions.WrongTimeException;
 
 import javassist.NotFoundException;
 
@@ -21,7 +22,7 @@ public class ExceptionController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("message", "Códigos de matricula repetidos, por favor varefique o mesmo");
 		String msg = "Por favor verifique os campos, algum campo está vazio ou o código de matrícula está repetido";
-		return ResponseEntity.badRequest().headers(headers).body(msg);
+		return ResponseEntity.badRequest().headers(headers).body(exception.getConstraintName());
 	}
 	
 
@@ -31,7 +32,7 @@ public class ExceptionController {
 		String msg = "Algum parâmetro foi passado de forma errada, por favor verifique os dados passados";
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 				.header("message", msg)
-				.body(msg);
+				.body(exception.getCause());
 	}
 
 	@ExceptionHandler(SameCpfException.class)
@@ -61,6 +62,18 @@ public class ExceptionController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("message", excception.getMsg());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).body(excception.getMsg());
+	}
+	
+	@ExceptionHandler(WrongTimeException.class)
+	public ResponseEntity<?> wrongTime(WrongTimeException exception) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("message", exception.getMsg());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).body(exception.getMsg());
+	}
+	
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<?> illegalArgument(IllegalArgumentException exception){
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
 	}
 
 }

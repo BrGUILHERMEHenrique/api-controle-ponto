@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dois.pack.api.exceptions.EmptyHourException;
+import com.dois.pack.api.exceptions.WrongTimeException;
 import com.dois.pack.api.models.HorarioDetalhes;
 import com.dois.pack.api.services.HorarioDetalhesService;
 
@@ -46,7 +47,7 @@ public class HorarioDetalhesController {
 	@ApiOperation("Permite cadastrar uma nova relação Horário-Detalhes")
 	@PostMapping(consumes= {MediaType.APPLICATION_JSON_VALUE},
 						produces= {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<HorarioDetalhes> create(@Valid @RequestBody HorarioDetalhes horarioDetalhes) throws EmptyHourException {
+	public ResponseEntity<HorarioDetalhes> create(@Valid @RequestBody HorarioDetalhes horarioDetalhes) throws EmptyHourException, WrongTimeException, IllegalArgumentException, IllegalAccessException {
 		return ResponseEntity.status(HttpStatus.CREATED).body(horarioDetalhesService.create(horarioDetalhes));
 	}
 

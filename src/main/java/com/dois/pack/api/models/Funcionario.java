@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "funcionario")
@@ -48,7 +50,7 @@ public class Funcionario implements Serializable {
 	private String telefone;
 	
 	@OneToOne
-	@JoinColumn(name = "id_empresa")
+	@JoinColumn(name = "id_empresa", foreignKey = @ForeignKey(name="Não_pode_Excluir_a_Empresa_Antes_De_Excluir_as_Relações"))
 	private Empresa idEmpresa;
 
 	public Funcionario() {
