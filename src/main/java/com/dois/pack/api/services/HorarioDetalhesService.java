@@ -27,13 +27,12 @@ public class HorarioDetalhesService {
 		Field[] campos = theClass.getDeclaredFields();
 		if(!horarioDetalhes.getFolga()) {
 			for(Field campo : campos) {
-				campo.setAccessible(true);
-				System.out.println(campo.get(horarioDetalhes));
-
-				if(campo.get(horarioDetalhes) == null) {
-					throw new EmptyHourException();
+				campo.setAccessible(true);//importante para pode ver o campo! manter
+				if(campo.get(horarioDetalhes) == null && campo.getName() != "id") {
+					throw new EmptyHourException();//o primeiro que ele bate já para tudo
 				}
 			}
+			
 		}
 
 		return horarioDetalhesRepository.save(horarioDetalhes);
