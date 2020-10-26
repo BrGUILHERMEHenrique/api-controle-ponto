@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,12 +14,14 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.Constraint;
 import javax.validation.constraints.NotNull;
 
 
 @Entity
 @Table(name="horario_detalhes", 
-			indexes = {@Index(name = "codigo_dia", columnList = "codigo_dia", unique=true)})
+			indexes = {@Index(name = "Esse_código_de_dia_já_existe", columnList = "codigo_dia, id_horario", unique=true)})
 public class HorarioDetalhes implements Serializable {
 	
 	private static final long serialVersionUID = 2103677445935061431L;
@@ -30,7 +33,7 @@ public class HorarioDetalhes implements Serializable {
 	
 	@NotNull
 	@OneToOne
-	@JoinColumn(name = "id_horario")
+	@JoinColumn(name = "id_horario", foreignKey = @ForeignKey(name="Não_pode_Excluir_o_Horário_Antes_De_Excluir_as_relações"))
 	private Horario idHorario;
 	
 	@NotNull
