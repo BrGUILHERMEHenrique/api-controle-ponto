@@ -44,6 +44,11 @@ public class HorarioDetalhesService {
 	}
 	
 	@Transactional
+	public List<HorarioDetalhes> getAllIdHorario(Integer idHorario){
+		return horarioDetalhesRepository.getAllWithIdHorario(idHorario);
+	}
+	
+	@Transactional
 	public Optional<HorarioDetalhes> getbyId(Integer id) {
 		return horarioDetalhesRepository.findById(id);
 	}

@@ -43,6 +43,12 @@ public class HorarioDetalhesController {
 		HorarioDetalhes horarioDetalhes = horarioDetalhesService.getbyId(id).get();
 		return ResponseEntity.ok(horarioDetalhes);
 	}
+	
+	@ApiOperation("Retorna uma lista com Detalhes de horário baseando-se no id do horário")
+	@GetMapping(path="idHorario/{idHorario}", produces= {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<List<HorarioDetalhes>> getWithIdHorario (@PathVariable Integer idHorario){
+		return ResponseEntity.ok(horarioDetalhesService.getAllIdHorario(idHorario));
+	}
 
 	@ApiOperation("Permite cadastrar uma nova relação Horário-Detalhes")
 	@PostMapping(consumes= {MediaType.APPLICATION_JSON_VALUE},
