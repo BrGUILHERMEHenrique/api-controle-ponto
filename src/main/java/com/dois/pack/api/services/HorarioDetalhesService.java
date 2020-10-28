@@ -3,17 +3,13 @@ package com.dois.pack.api.services;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
-
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.dois.pack.api.exceptions.EmptyHourException;
 import com.dois.pack.api.exceptions.WrongTimeException;
 import com.dois.pack.api.models.HorarioDetalhes;
 import com.dois.pack.api.repositorys.HorarioDetalhesRepository;
-
 
 @Service
 public class HorarioDetalhesService {
@@ -32,9 +28,15 @@ public class HorarioDetalhesService {
 					throw new EmptyHourException();//o primeiro que ele bate já para tudo
 				}
 			}
-			
+			if(horarioDetalhes.getEntrada1().getHour()>= horarioDetalhes.getSaida1().getHour() || 
+					horarioDetalhes.getEntrada1().getHour() >= horarioDetalhes.getSaida2().getHour() ||
+					horarioDetalhes.getEntrada1().getHour() >= horarioDetalhes.getEntrada2().getHour() ||
+					horarioDetalhes.getSaida1().getHour() >= horarioDetalhes.getEntrada2().getHour() ||
+					horarioDetalhes.getSaida1().getHour() >= horarioDetalhes.getSaida2().getHour() ||
+					horarioDetalhes.getEntrada2().getHour() >= horarioDetalhes.getSaida2().getHour()) {
+				throw new WrongTimeException();
+			}	
 		}
-
 		return horarioDetalhesRepository.save(horarioDetalhes);
 	}
 	
