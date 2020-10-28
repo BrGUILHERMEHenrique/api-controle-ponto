@@ -40,6 +40,10 @@ public class HorarioDetalhesService {
 		return horarioDetalhesRepository.save(horarioDetalhes);
 	}
 	
+	@Transactional 
+	public Integer getCount (Integer idHorario) {
+		return horarioDetalhesRepository.getCount(idHorario);
+	}
 	@Transactional
 	public List<HorarioDetalhes> getAll() {
 		return horarioDetalhesRepository.findAll();
