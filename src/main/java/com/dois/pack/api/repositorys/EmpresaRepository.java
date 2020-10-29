@@ -12,4 +12,5 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Integer>{
 	@Query(value="SELECT * FROM empresa WHERE cnpj = :cnpj",
 			nativeQuery=true)
 	Empresa getWithCnpj(String cnpj);
+	
 }

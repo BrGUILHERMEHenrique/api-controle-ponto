@@ -29,6 +29,11 @@ public class FuncionarioService {
 	}
 	
 	@Transactional
+	public List<Funcionario> getWithIdEmpresa(Integer idEmpresa){
+		return funcionarioRepository.getWithEmpresa(idEmpresa);
+	}
+	
+	@Transactional
 	public List<Funcionario> getAll() {
 		return funcionarioRepository.findAll();
 	}

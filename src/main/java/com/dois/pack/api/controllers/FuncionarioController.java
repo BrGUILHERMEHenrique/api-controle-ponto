@@ -50,6 +50,12 @@ public class FuncionarioController {
 		Funcionario funcionario = funcionarioService.getbyId(id).get();
 		return ResponseEntity.ok(funcionario);
 	}
+	
+	@ApiOperation("Retorna uma lista de funcionário baseando-se no id da empresa correspondente")
+	@GetMapping(path="/empresa/{idEmpresa}")
+	public ResponseEntity<List<Funcionario>> getWithEmpresa (Integer idEmpresa) {
+		return ResponseEntity.ok(funcionarioService.getWithIdEmpresa(idEmpresa));
+	}
 
 	@ApiOperation("Permite cadastrar um novo funcionário")
 	@PostMapping(consumes= {MediaType.APPLICATION_JSON_VALUE},

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.dois.pack.api.models.Apontamento;
 import com.dois.pack.api.models.FuncionarioHorario;
 import com.dois.pack.api.models.HorarioDetalhes;
+import com.dois.pack.api.models.ModelObjGet;
 import com.dois.pack.api.repositorys.ApontamentoRepository;
 import com.dois.pack.api.repositorys.FuncionarioHorarioRepository;
 import com.dois.pack.api.repositorys.HorarioDetalhesRepository;
@@ -40,6 +41,16 @@ public class ApontamentoService {
 	public Apontamento getById(Integer id) {
 		Apontamento apontamento = apontamentoRepository.findById(id).get();
 		return apontamento;
+	}
+	
+	@Transactional
+	public List<Apontamento> getByIdFuncionarioAndDate (ModelObjGet modelObj){
+		return apontamentoRepository.getByIdAndDate(modelObj.getIdFuncionario(), modelObj.getPrimaryDate(), modelObj.getSecundaryDate());
+	}
+	
+	@Transactional
+	public List<Apontamento> getByIdFuncionario (Integer idFuncionario) {
+		return apontamentoRepository.getbyIdFuncionario(idFuncionario);
 	}
 
 	@Transactional

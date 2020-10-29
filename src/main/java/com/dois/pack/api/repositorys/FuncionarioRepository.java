@@ -16,5 +16,8 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Intege
 			nativeQuery = true)
 	Funcionario getWithPis(String pis);
 	
+	@Query(value="SELECT * FROM funcionario WHERE id_empresa = :idEmpresa", nativeQuery=true)
+	List<Funcionario> getWithEmpresa(Integer idEmpresa);
+	
 
 }
