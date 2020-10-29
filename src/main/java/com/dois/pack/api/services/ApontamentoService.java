@@ -55,7 +55,7 @@ public class ApontamentoService {
 
 	@Transactional
 	public Apontamento create(Apontamento apontamento) {
-
+		System.out.println("Apontamento: " + apontamento);
 		Integer idHorario = funcionarioHorarioRepository.getIdHorario(apontamento.getFuncionario().getId(),
 				apontamento.getData());
 		System.out.println("Horario: " + idHorario);
