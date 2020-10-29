@@ -1,6 +1,6 @@
 package com.dois.pack.api.services;
 
-import java.time.Duration;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
@@ -45,9 +45,9 @@ public class ApontamentoService {
 	@Transactional
 	public Apontamento create(Apontamento apontamento) {
 
-		Integer idHorario = funcionarioHorarioRepository.getIdHorario(apontamento.getIdFuncionario().getId(),
+		Integer idHorario = funcionarioHorarioRepository.getIdHorario(apontamento.getFuncionario().getId(),
 				apontamento.getData());
-		Integer idFuncionario = apontamento.getIdFuncionario().getId();
+		Integer idFuncionario = apontamento.getFuncionario().getId();
 
 		if (idHorario != null) {
 			Integer qtdHorarios = horarioDetalhesReposotory.getCount(idHorario);
@@ -64,7 +64,7 @@ public class ApontamentoService {
 
 			HorarioDetalhes horarioDetalhe = horarioDetalhesReposotory.getWithCodigoDia(result);
 
-			apontamento.setIdHorarioDetalhes(horarioDetalhe);
+			apontamento.setHorarioDetalhes(horarioDetalhe);
 
 			calculateHours(apontamento, horarioDetalhe);
 
@@ -211,7 +211,7 @@ public class ApontamentoService {
 			if (apontamento.getSaida2() != null) {
 				apontamentoAtualizado.setSaida2(apontamento.getSaida2());
 			}
-			Integer contaHoras = calculateAccount(apontamentoAtualizado, apontamentoAtualizado.getIdHorarioDetalhes());
+			Integer contaHoras = calculateAccount(apontamentoAtualizado, apontamentoAtualizado.getHorarioDetalhes());
 			System.out.println("Conta horas put: " + contaHoras);
 			verifyHours(apontamentoAtualizado, contaHoras);
 

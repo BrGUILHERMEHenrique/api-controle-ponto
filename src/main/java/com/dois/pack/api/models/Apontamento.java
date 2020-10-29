@@ -32,12 +32,13 @@ public class Apontamento implements Serializable {
 	@NotNull
 	@OneToOne
 	@JoinColumn(name="id_funcionario", foreignKey = @ForeignKey(name="Não_pode_Excluir_o_Funcionário_Antes_De_Excluir_as_relações_do_mesmo"))
-	private Funcionario idFuncionario;
+	private Funcionario funcionario;
+
 	
 	@NotNull
 	@OneToOne
 	@JoinColumn(name="id_horarioDetalhes", foreignKey = @ForeignKey(name="Não_pode_Excluir_os_Detalhes_de_Horário_Antes_De_Excluir_as_relações"))
-	private HorarioDetalhes idHorarioDetalhes;
+	private HorarioDetalhes horarioDetalhes;
 	
 	@NotNull
 	@Column(name="data")
@@ -73,8 +74,8 @@ public class Apontamento implements Serializable {
 			@NotNull LocalDate data, LocalTime entrada1, LocalTime saida1, LocalTime entrada2, LocalTime saida2,
 			LocalTime totalTrabalhado, LocalTime saldoHe, LocalTime saldoAtraso) {
 		super();
-		this.idFuncionario = idFuncionario;
-		this.idHorarioDetalhes = idHorarioDetalhes;
+		this.funcionario = idFuncionario;
+		this.horarioDetalhes = idHorarioDetalhes;
 		this.data = data;
 		this.entrada1 = entrada1;
 		this.saida1 = saida1;
@@ -93,20 +94,20 @@ public class Apontamento implements Serializable {
 		this.id = id;
 	}
 
-	public Funcionario getIdFuncionario() {
-		return idFuncionario;
+	public Funcionario getFuncionario() {
+		return funcionario;
 	}
 
-	public void setIdFuncionario(Funcionario idFuncionario) {
-		this.idFuncionario = idFuncionario;
+	public void setFuncionario(Funcionario idFuncionario) {
+		this.funcionario = idFuncionario;
 	}
 
-	public HorarioDetalhes getIdHorarioDetalhes() {
-		return idHorarioDetalhes;
+	public HorarioDetalhes getHorarioDetalhes() {
+		return horarioDetalhes;
 	}
 
-	public void setIdHorarioDetalhes(HorarioDetalhes idHorarioDetalhes) {
-		this.idHorarioDetalhes = idHorarioDetalhes;
+	public void setHorarioDetalhes(HorarioDetalhes idHorarioDetalhes) {
+		this.horarioDetalhes = idHorarioDetalhes;
 	}
 
 	public LocalDate getData() {
