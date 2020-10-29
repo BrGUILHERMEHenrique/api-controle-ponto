@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="apontamento", indexes = {
-		@Index(name="A mesma_data_não_pode_se_repetir", columnList = "id_funcionario, data", unique = true)
+		@Index(name="A_mesma_data_não_pode_se_repetir", columnList = "id_funcionario, data", unique=true)
 })
 public class Apontamento implements Serializable {
 
