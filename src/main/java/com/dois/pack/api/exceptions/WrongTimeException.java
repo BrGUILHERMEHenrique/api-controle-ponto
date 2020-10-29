@@ -13,6 +13,5 @@ public class WrongTimeException extends Exception {
 	public WrongTimeException() {
 		super();
 	}
-	
-	
+		
 }
