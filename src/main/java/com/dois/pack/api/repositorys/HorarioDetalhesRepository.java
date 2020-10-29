@@ -15,4 +15,10 @@ public interface HorarioDetalhesRepository extends JpaRepository<HorarioDetalhes
 	@Query(value = "SELECT * FROM horario_detalhes where id_horario = :idHorario", 
 				nativeQuery=true)
 	List<HorarioDetalhes> getAllWithIdHorario(Integer idHorario);
+	
+	@Query(value="SELECT COUNT(*) FROM horario_detalhes WHERE id_horario = :idHorario", nativeQuery=true)
+	Integer getCount(Integer idHorario);
+	
+	@Query(value="SELECT * FROM horario_detalhes WHERE codigo_dia = :codigoDia", nativeQuery=true)
+	HorarioDetalhes getWithCodigoDia(Integer codigoDia);
 }
