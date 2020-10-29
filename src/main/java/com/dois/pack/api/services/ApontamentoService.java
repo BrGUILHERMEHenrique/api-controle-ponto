@@ -73,7 +73,7 @@ public class ApontamentoService {
 			Period period = Period.between(vigenciaInicial, apontamento.getData());
 
 			Integer result = calculateResult(period.getDays(), funcionarioHorario.getCodigoInicial(), qtdHorarios);
-
+			System.out.println("result: " + result);
 			HorarioDetalhes horarioDetalhe = horarioDetalhesReposotory.getWithCodigoDia(result);
 
 			apontamento.setHorarioDetalhes(horarioDetalhe);
