@@ -58,6 +58,7 @@ public class ApontamentoService {
 
 		Integer idHorario = funcionarioHorarioRepository.getIdHorario(apontamento.getFuncionario().getId(),
 				apontamento.getData());
+		System.out.println("Horario: " + idHorario);
 		Integer idFuncionario = apontamento.getFuncionario().getId();
 
 		if (idHorario != null) {
