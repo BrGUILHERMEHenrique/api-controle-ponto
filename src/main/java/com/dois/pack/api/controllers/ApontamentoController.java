@@ -1,5 +1,6 @@
 package com.dois.pack.api.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dois.pack.api.models.Apontamento;
+import com.dois.pack.api.models.ModelObjGet;
+import com.dois.pack.api.repositorys.ApontamentoRepository;
 import com.dois.pack.api.services.ApontamentoService;
 
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +35,20 @@ public class ApontamentoController {
 				produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Apontamento> create(@RequestBody Apontamento apontamento) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(apontamentoService.create(apontamento));
+	}
+	
+	@ApiOperation("Retorna uma lista de apontamentos baseando-se no id de funcionário e as datas informadas")
+	@GetMapping(path="/idDate", consumes = { MediaType.APPLICATION_JSON_VALUE }, 
+				produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<List<Apontamento>> getByIdFuncionarioAndDate(@RequestBody ModelObjGet modelObj){
+		return ResponseEntity.ok(apontamentoService.getByIdFuncionarioAndDate(modelObj));
+	}
+	
+	@ApiOperation("Retorna uma lista de apontamentos baseando-se no id de funcionário")
+	@GetMapping(path="/idFuncionario/{idFuncionario}", 
+					produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<List<Apontamento>> getByIdFuncionario(@PathVariable Integer idFuncionario){
+		return ResponseEntity.ok(apontamentoService.getByIdFuncionario(idFuncionario));
 	}
 
 	@PutMapping(path = "/{id}", consumes = { MediaType.APPLICATION_JSON_VALUE },
