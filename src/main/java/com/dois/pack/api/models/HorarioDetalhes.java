@@ -34,7 +34,7 @@ public class HorarioDetalhes implements Serializable {
 	@NotNull
 	@OneToOne
 	@JoinColumn(name = "id_horario", foreignKey = @ForeignKey(name="Não_pode_Excluir_o_Horário_Antes_De_Excluir_as_relações"))
-	private Horario idHorario;
+	private Horario horario;
 	
 	@NotNull
 	@Column(name = "folga")
@@ -60,12 +60,12 @@ public class HorarioDetalhes implements Serializable {
 	@Column(name = "saida_2")
 	private LocalTime saida2;
 
-	public Horario getIdHorario() {
-		return idHorario;
+	public Horario getHorario() {
+		return horario;
 	}
 
-	public void setIdHorario(Horario idHorario) {
-		this.idHorario = idHorario;
+	public void setHorario(Horario idHorario) {
+		this.horario = idHorario;
 	}
 
 	public Boolean getFolga() {
