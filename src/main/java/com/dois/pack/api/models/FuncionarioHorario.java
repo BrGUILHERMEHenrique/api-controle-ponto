@@ -1,9 +1,9 @@
 package com.dois.pack.api.models;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -40,11 +40,11 @@ public class FuncionarioHorario implements Serializable {
     
     @NotNull
     @Column (name = "vigencia_inicial")
-    private LocalDateTime vigenciaInicial;
+    private LocalDate vigenciaInicial;
     
     @NotNull
     @Column (name = "vigencia_final")
-    private LocalDateTime vigenciaFinal;
+    private LocalDate vigenciaFinal;
 
 	public Funcionario getIdFuncionario() {
 		return idFuncionario;
@@ -70,19 +70,19 @@ public class FuncionarioHorario implements Serializable {
 		this.codigoInicial = codigoInicial;
 	}
 
-	public LocalDateTime getVigenciaInicial() {
+	public LocalDate getVigenciaInicial() {
 		return vigenciaInicial;
 	}
 
-	public void setVigenciaInicial(LocalDateTime vigenciaInicial) {
+	public void setVigenciaInicial(LocalDate vigenciaInicial) {
 		this.vigenciaInicial = vigenciaInicial;
 	}
 
-	public LocalDateTime getVigenciaFinal() {
+	public LocalDate getVigenciaFinal() {
 		return vigenciaFinal;
 	}
 
-	public void setVigenciaFinal(LocalDateTime vigenciaFinal) {
+	public void setVigenciaFinal(LocalDate vigenciaFinal) {
 		this.vigenciaFinal = vigenciaFinal;
 	}
 

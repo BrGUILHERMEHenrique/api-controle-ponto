@@ -12,9 +12,9 @@ import com.dois.pack.api.models.Funcionario;
 @Repository
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Integer>{
 
-	@Query(value = "SELECT * FROM funcionario where cod_matricula = :codMatricula",
+	@Query(value = "SELECT * FROM funcionario where pis = :pis",
 			nativeQuery = true)
-	Funcionario getWithMatricula(String codMatricula);
+	Funcionario getWithPis(String pis);
 	
 
 }

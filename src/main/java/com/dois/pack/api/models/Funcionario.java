@@ -28,8 +28,8 @@ public class Funcionario implements Serializable {
 	private Integer id;
 
 	@NotNull
-	@Column(name = "cod_matricula", unique = true, length = 20)
-	private String codMatricula;
+	@Column(name = "pis", unique = true, length = 11)
+	private String pis;
 	
 	@NotNull
 	@Column(name = "nome", length = 100)
@@ -58,12 +58,12 @@ public class Funcionario implements Serializable {
 	}
 	
 
-	public Funcionario(Integer id, @NotNull String codMatricula, @NotNull @Size(min = 1, max = 100) String nome,
+	public Funcionario(Integer id, @NotNull String pis, @NotNull @Size(min = 1, max = 100) String nome,
 			@NotNull LocalDate dataNascimento, @NotNull @Size(min = 11, max = 11) String cpf, @NotNull String telefone,
 			Empresa idEmpresa) {
 		super();
 		this.id = id;
-		this.codMatricula = codMatricula;
+		this.pis = pis;
 		this.nome = nome;
 		this.dataNascimento = dataNascimento;
 		this.cpf = cpf;
@@ -79,12 +79,12 @@ public class Funcionario implements Serializable {
 
 
 
-	public String getCodMatricula() {
-		return codMatricula;
+	public String getPis() {
+		return pis;
 	}
 
-	public void setCodMatricula(String codMatricula) {
-		this.codMatricula = codMatricula;
+	public void setPis(String pis) {
+		this.pis = pis;
 	}
 
 	public String getNome() {

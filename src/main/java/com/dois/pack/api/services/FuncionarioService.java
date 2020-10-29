@@ -20,11 +20,11 @@ public class FuncionarioService {
 	
 	@Transactional
 	public Funcionario create(Funcionario funcionario) throws SameCpfException {
-		Funcionario funcionarioAchado = funcionarioRepository.getWithMatricula(funcionario.getCodMatricula());
+		Funcionario funcionarioAchado = funcionarioRepository.getWithPis(funcionario.getPis());
 		if(funcionarioAchado == null) {
 			return funcionarioRepository.save(funcionario);	
 		} else {
-			throw new SameCpfException(funcionario.getCodMatricula());
+			throw new SameCpfException(funcionario.getPis());
 		}
 	}
 	
@@ -40,8 +40,8 @@ public class FuncionarioService {
 	}
 	
 	@Transactional
-	public Funcionario getByMatricula(String codMatricula) {
-		return funcionarioRepository.getWithMatricula(codMatricula);
+	public Funcionario getByPis(String Pis) {
+		return funcionarioRepository.getWithPis(Pis);
 	}
 	
 	@Transactional

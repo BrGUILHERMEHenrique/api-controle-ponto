@@ -39,9 +39,9 @@ public class FuncionarioController {
 	}
 	
 	@ApiOperation("Retorna um funcionário baseado no seu código de matricula")
-	@GetMapping(path="/cod/{codMatricula}", produces = {MediaType.APPLICATION_JSON_VALUE})
-	public Funcionario getMatricula(@PathVariable String codMatricula){
-		return funcionarioService.getByMatricula(codMatricula);
+	@GetMapping(path="/cod/{pis}", produces = {MediaType.APPLICATION_JSON_VALUE})
+	public Funcionario getMatricula(@PathVariable String pis){
+		return funcionarioService.getByPis(pis);
 	}
 	
 	@ApiOperation("Retorna um funcionário baseado em seu id")
