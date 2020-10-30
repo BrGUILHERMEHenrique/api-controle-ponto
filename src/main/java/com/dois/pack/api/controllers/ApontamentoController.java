@@ -1,6 +1,6 @@
 package com.dois.pack.api.controllers;
 
-import java.time.LocalDate;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dois.pack.api.models.Apontamento;
 import com.dois.pack.api.models.ModelObjGet;
-import com.dois.pack.api.repositorys.ApontamentoRepository;
+
 import com.dois.pack.api.services.ApontamentoService;
 
 import io.swagger.annotations.ApiOperation;
@@ -38,10 +38,9 @@ public class ApontamentoController {
 	}
 	
 	@ApiOperation("Retorna uma lista de apontamentos baseando-se no id de funcionário e as datas informadas")
-	@GetMapping(path="/idDate", consumes = { MediaType.APPLICATION_JSON_VALUE }, 
-				produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<List<Apontamento>> getByIdFuncionarioAndDate(@RequestBody ModelObjGet modelObj){
-		return ResponseEntity.ok(apontamentoService.getByIdFuncionarioAndDate(modelObj));
+	@PostMapping(path="/totalDays")
+	public List<Apontamento> getDaysTotal (@RequestBody ModelObjGet modelObj) {
+		return apontamentoService.getAllDays(modelObj);
 	}
 	
 	@ApiOperation("Retorna uma lista de apontamentos baseando-se no id de funcionário")
