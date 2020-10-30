@@ -1,9 +1,10 @@
 package com.dois.pack.api.services;
 
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dois.pack.api.models.Apontamento;
+import com.dois.pack.api.models.Funcionario;
 import com.dois.pack.api.models.FuncionarioHorario;
 import com.dois.pack.api.models.HorarioDetalhes;
 import com.dois.pack.api.models.ModelObjGet;
@@ -30,7 +32,7 @@ public class ApontamentoService {
 	FuncionarioHorarioRepository funcionarioHorarioRepository;
 
 	@Autowired
-	HorarioDetalhesRepository horarioDetalhesReposotory;
+	HorarioDetalhesRepository horarioDetalhesRepository;
 
 	@Transactional
 	public List<Apontamento> getAll() {
@@ -38,18 +40,69 @@ public class ApontamentoService {
 	}
 
 	@Transactional
+	public List<Apontamento> getAllDays(ModelObjGet modelObj) {
+		Integer idFuncionario = modelObj.getIdFuncionario();
+		LocalDate dataInicial = modelObj.getDataInicial();
+		LocalDate dataFinal = modelObj.getDataFinal();
+		List<Apontamento> apontamentosApurados = apontamentoRepository.getbyIdFuncionario(idFuncionario);
+		Apontamento apontamento = new Apontamento();
+		Apontamento apontamento2;
+		LocalDate data;
+		HorarioDetalhes horarioDetalhe;
+		Integer result;
+		FuncionarioHorario funcionarioHorario;
+		Integer qtdHorarios;
+		Period period;
+		Integer idHorario;
+		List<Apontamento> teste = new ArrayList<Apontamento>();
+		for (int dias = 1; dias <= dataFinal.getDayOfMonth(); dias++) {
+			data = LocalDate.of(dataFinal.getYear(), dataFinal.getMonth(), dias);
+			if (!apontamento.DataExiste(apontamentosApurados, data)) {
+
+				idHorario = funcionarioHorarioRepository.getIdHorario(idFuncionario, data);
+				System.out.println("idHorario: " + idHorario);
+				apontamento2 = new Apontamento();
+				apontamento2.setFuncionario(new Funcionario(idFuncionario));
+				apontamento2.setData(data);
+				if (idHorario != null) {
+					qtdHorarios = horarioDetalhesRepository.getCount(idHorario);
+					funcionarioHorario = funcionarioHorarioRepository.getFuncionario(idFuncionario, idHorario, data);
+					System.out.println("idHorario: " + idHorario);
+
+					period = Period.between(funcionarioHorario.getVigenciaInicial(), apontamento2.getData());
+
+					System.out.println("periodo: " + period);
+					result = calculateResult(period.getDays(), funcionarioHorario.getCodigoInicial(), qtdHorarios);
+					System.out.println("Result: " + result);
+					horarioDetalhe = horarioDetalhesRepository.getWithCodigoDia(result, idHorario);
+
+					System.out.println("Horario Detalhes: " + horarioDetalhe.getHorario().getDescHorario());
+					apontamento2.setHorarioDetalhes(horarioDetalhe);
+
+					calculateHours(apontamento2, horarioDetalhe);
+				}
+				apontamentosApurados.add(apontamento2);
+			}
+		}
+		teste = apontamento.dataAntesOuDepois(apontamentosApurados, dataInicial, dataFinal);
+		Collections.sort(teste);
+		return teste;
+	}
+
+	@Transactional
 	public Apontamento getById(Integer id) {
 		Apontamento apontamento = apontamentoRepository.findById(id).get();
 		return apontamento;
 	}
-	
+
 	@Transactional
-	public List<Apontamento> getByIdFuncionarioAndDate (ModelObjGet modelObj){
-		return apontamentoRepository.getByIdAndDate(modelObj.getIdFuncionario(), modelObj.getPrimaryDate(), modelObj.getSecundaryDate());
+	public List<Apontamento> getByIdFuncionarioAndDate(ModelObjGet modelObj) {
+		return apontamentoRepository.getByIdAndDate(modelObj.getIdFuncionario(), modelObj.getDataInicial(),
+				modelObj.getDataFinal());
 	}
-	
+
 	@Transactional
-	public List<Apontamento> getByIdFuncionario (Integer idFuncionario) {
+	public List<Apontamento> getByIdFuncionario(Integer idFuncionario) {
 		return apontamentoRepository.getbyIdFuncionario(idFuncionario);
 	}
 
@@ -61,9 +114,9 @@ public class ApontamentoService {
 		Integer idFuncionario = apontamento.getFuncionario().getId();
 
 		if (idHorario != null) {
-			Integer qtdHorarios = horarioDetalhesReposotory.getCount(idHorario);
+			Integer qtdHorarios = horarioDetalhesRepository.getCount(idHorario);
 			FuncionarioHorario funcionarioHorario = funcionarioHorarioRepository.getFuncionario(idFuncionario,
-					idHorario);
+					idHorario, apontamento.getData());
 
 			LocalDate vigenciaInicial = LocalDate.of(funcionarioHorario.getVigenciaInicial().getYear(),
 					funcionarioHorario.getVigenciaInicial().getMonth(),
@@ -73,7 +126,7 @@ public class ApontamentoService {
 
 			Integer result = calculateResult(period.getDays(), funcionarioHorario.getCodigoInicial(), qtdHorarios);
 
-			HorarioDetalhes horarioDetalhe = horarioDetalhesReposotory.getWithCodigoDia(result);
+			HorarioDetalhes horarioDetalhe = horarioDetalhesRepository.getWithCodigoDia(result, idHorario);
 
 			apontamento.setHorarioDetalhes(horarioDetalhe);
 
@@ -86,7 +139,9 @@ public class ApontamentoService {
 
 	private Integer calculateResult(Integer days, Integer codigoInicial, Integer qtdHorarios) {
 
-		Integer result = ((days + 1 % qtdHorarios) + codigoInicial) - 1;
+		Integer result = (((days + 1) % qtdHorarios) + codigoInicial) - 1;
+
+		System.out.println("quantidade Horarios: " + qtdHorarios);
 
 		if (result == 0) {
 			result = qtdHorarios;
@@ -157,13 +212,15 @@ public class ApontamentoService {
 
 	private void verifyHours(Apontamento apontamento, int horas) {
 		System.out.println("Horas: " + horas);
-
+		
+		int hora;
+		int minuto;
 		LocalTime horaApurada;
 
 		if (horas < 0) {
 			horas = Math.abs(horas);
-			int hora = horas / 60;
-			int minuto = horas % 60;
+			hora = horas / 60;
+			minuto = horas % 60;
 			System.out.println("Horas atraso: " + hora);
 			System.out.println("minuto atraso: " + minuto);
 			horaApurada = LocalTime.of(hora, minuto);
@@ -172,8 +229,8 @@ public class ApontamentoService {
 			apontamento.setSaldoHe(LocalTime.of(0, 0));
 
 		} else {
-			int hora = horas / 60;
-			int minuto = horas % 60;
+			hora = horas / 60;
+			minuto = horas % 60;
 			System.out.println("Horas HE: " + hora);
 			System.out.println("minuto HE: " + minuto);
 			horaApurada = LocalTime.of(hora, minuto);
@@ -209,17 +266,20 @@ public class ApontamentoService {
 	@Transactional
 	public Apontamento update(Apontamento apontamento, Integer id) {
 		Apontamento apontamentoAtualizado = apontamentoRepository.findById(id).get();
+		System.out.println("apontantamento: " + apontamento.getEntrada1());
+		LocalTime dataZerada = LocalTime.of(0, 0);
 		if (apontamentoAtualizado != null) {
-			if (apontamento.getEntrada1() != null) {
+			if (apontamento.getEntrada1() != dataZerada) {
 				apontamentoAtualizado.setEntrada1(apontamento.getEntrada1());
+				System.out.println("apontamento atualizado: " + apontamento.getEntrada1());
 			}
-			if (apontamento.getEntrada2() != null) {
+			if (apontamento.getEntrada2() != dataZerada) {
 				apontamentoAtualizado.setEntrada2(apontamento.getEntrada2());
 			}
-			if (apontamento.getSaida1() != null) {
+			if (apontamento.getSaida1() != dataZerada) {
 				apontamentoAtualizado.setSaida1(apontamento.getSaida1());
 			}
-			if (apontamento.getSaida2() != null) {
+			if (apontamento.getSaida2() != dataZerada) {
 				apontamentoAtualizado.setSaida2(apontamento.getSaida2());
 			}
 			Integer contaHoras = calculateAccount(apontamentoAtualizado, apontamentoAtualizado.getHorarioDetalhes());

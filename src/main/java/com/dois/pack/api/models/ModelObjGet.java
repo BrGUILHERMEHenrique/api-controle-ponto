@@ -5,8 +5,8 @@ import java.time.LocalDate;
 public class ModelObjGet {
 
 	private Integer idFuncionario;
-	private LocalDate primaryDate;
-	private LocalDate secundaryDate;
+	private LocalDate dataInicial;
+	private LocalDate dataFinal;
 	
 	
 	public ModelObjGet() {
@@ -14,11 +14,11 @@ public class ModelObjGet {
 	}
 
 
-	public ModelObjGet(Integer idFuncionario, LocalDate primaryDate, LocalDate secundaryDate) {
+	public ModelObjGet(Integer idFuncionario, LocalDate dataInicial, LocalDate dataFinal) {
 		super();
 		this.idFuncionario = idFuncionario;
-		this.primaryDate = primaryDate;
-		this.secundaryDate = secundaryDate;
+		this.dataInicial = dataInicial;
+		this.dataFinal = dataFinal;
 	}
 
 
@@ -32,23 +32,23 @@ public class ModelObjGet {
 	}
 
 
-	public LocalDate getPrimaryDate() {
-		return primaryDate;
+	public LocalDate getDataInicial() {
+		return dataInicial;
 	}
 
 
-	public void setPrimaryDate(LocalDate primaryDate) {
-		this.primaryDate = primaryDate;
+	public void setDataInicial(LocalDate dataInicial) {
+		this.dataInicial = dataInicial;
 	}
 
 
-	public LocalDate getSecundaryDate() {
-		return secundaryDate;
+	public LocalDate getDataFinal() {
+		return dataFinal;
 	}
 
 
-	public void setSecundaryDate(LocalDate secundaryDate) {
-		this.secundaryDate = secundaryDate;
+	public void setDataFinal(LocalDate dataFinal) {
+		this.dataFinal = dataFinal;
 	}
 	
 	

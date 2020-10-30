@@ -3,6 +3,8 @@ package com.dois.pack.api.models;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @Table(name="apontamento", indexes = {
 		@Index(name="A_mesma_data_não_pode_se_repetir", columnList = "id_funcionario, data", unique=true)
 })
-public class Apontamento implements Serializable {
+public class Apontamento implements Serializable, Comparable<Apontamento> {
 
 	private static final long serialVersionUID = 8321879883486681092L;
 	
@@ -65,9 +67,48 @@ public class Apontamento implements Serializable {
 	@Column(name="saldo_atraso")
 	private LocalTime saldoAtraso;
 	
-	
+	public boolean DataExiste(List<Apontamento> apontamentos, LocalDate data) {
+		System.out.println("Data Existe: " + apontamentos.size());
+		for(Apontamento apontamento : apontamentos) {
+			System.out.println("Data apontamento: " + apontamento.getData());
+			if(apontamento.getData().getDayOfMonth() == data.getDayOfMonth()) {
+				return true;
+			} 
+		}
+		return false;
+	}
+	public List<Apontamento> dataAntesOuDepois(List<Apontamento> apontamentos, LocalDate dataInicial, LocalDate dataFinal) {
+		List<Apontamento> aux = new ArrayList<Apontamento>();
+		for(Apontamento apontamento : apontamentos) {
+			if(apontamento.getData().isAfter(dataInicial) && apontamento.getData().isBefore(dataFinal)) {
+				aux.add(apontamento);
+				System.out.println("Apontamento: " + apontamento.getData());
+			}
+			if(apontamento.getData().isEqual(dataInicial) || apontamento.getData().isEqual(dataFinal)) {
+				aux.add(apontamento);
+			}
+		}
+		return aux;
+	}
+	@Override
+	public int compareTo(Apontamento o) {
+		if(this.data != o.getData()) {
+			return this.data.getDayOfMonth() - o.getData().getDayOfMonth();
+		}
+		return this.data.compareTo(o.getData());
+	}
 	public Apontamento() {
 		super();
+		this.funcionario = new Funcionario();
+		this.horarioDetalhes = new HorarioDetalhes();
+		this.data = LocalDate.of(1900, 01, 01);
+		this.entrada1 = LocalTime.of(0, 0);
+		this.saida1 = LocalTime.of(0, 0);
+		this.entrada2 = LocalTime.of(0, 0);
+		this.saida2 = LocalTime.of(0, 0);
+		this.totalTrabalhado = LocalTime.of(0, 0);
+		this.saldoHe = LocalTime.of(0, 0);
+		this.saldoAtraso = LocalTime.of(0, 0);
 	}
 
 	public Apontamento(@NotNull Funcionario idFuncionario, @NotNull HorarioDetalhes idHorarioDetalhes,
@@ -173,6 +214,7 @@ public class Apontamento implements Serializable {
 	public void setSaldoAtraso(LocalTime saldoAtraso) {
 		this.saldoAtraso = saldoAtraso;
 	}
+	
 
 	
 	
