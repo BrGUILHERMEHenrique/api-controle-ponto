@@ -27,13 +27,13 @@ public class ExceptionController {
 	
 
 	
-//	@ExceptionHandler(NullPointerException.class)
-//	public ResponseEntity<?> NullPointer(NullPointerException exception){
-//		String msg = "Algum parâmetro foi passado de forma errada, por favor verifique os dados passados";
-//		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//				.header("message", msg)
-//				.body(exception.getCause());
-//	}
+	@ExceptionHandler(NullPointerException.class)
+	public ResponseEntity<?> NullPointer(NullPointerException exception){
+		String msg = "Algum parâmetro foi passado de forma errada, por favor verifique os dados passados";
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+				.header("message", msg)
+				.body(exception.getCause());
+	}
 
 	@ExceptionHandler(SameCpfException.class)
 	public ResponseEntity<?> sameCpf(SameCpfException exception){
