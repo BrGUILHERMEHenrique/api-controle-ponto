@@ -1,5 +1,6 @@
 package com.dois.pack.api.services;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,12 +31,16 @@ public class FuncionarioService {
 	
 	@Transactional
 	public List<Funcionario> getWithIdEmpresa(Integer idEmpresa){
-		return funcionarioRepository.getWithEmpresa(idEmpresa);
+		List<Funcionario> sortedList = funcionarioRepository.getWithEmpresa(idEmpresa);
+		Collections.sort(sortedList);
+		return sortedList;
 	}
 	
 	@Transactional
 	public List<Funcionario> getAll() {
-		return funcionarioRepository.findAll();
+		List<Funcionario> sortedList = funcionarioRepository.findAll();
+		Collections.sort(sortedList);
+		return sortedList;
 	}
 	
 	

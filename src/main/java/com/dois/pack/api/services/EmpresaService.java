@@ -1,5 +1,6 @@
 package com.dois.pack.api.services;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,9 @@ public class EmpresaService {
 	
 	@Transactional
 	public List<Empresa> getAll() {
-		return empresaRepository.findAll();
+		List<Empresa> sortedList = empresaRepository.findAll();
+		Collections.sort(sortedList);
+		return sortedList;
 	}
 	
 	@Transactional

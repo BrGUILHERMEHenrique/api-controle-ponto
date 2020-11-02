@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.dois.pack.api.exceptions.DiaForaDeVigenciaException;
 import com.dois.pack.api.exceptions.EmptyHourException;
 import com.dois.pack.api.exceptions.SameCnpjException;
 import com.dois.pack.api.exceptions.SameCpfException;
@@ -74,6 +75,11 @@ public class ExceptionController {
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<?> illegalArgument(IllegalArgumentException exception){
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+	}
+	
+	@ExceptionHandler(DiaForaDeVigenciaException.class)
+	public ResponseEntity<?> diaForaDeVigencia(DiaForaDeVigenciaException exception){
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMsg());
 	}
 
 }

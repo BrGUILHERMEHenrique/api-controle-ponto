@@ -1,12 +1,16 @@
 package com.dois.pack.api.services;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
 import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.dois.pack.api.models.Horario;
 import com.dois.pack.api.repositorys.HorarioRepository;
-import org.springframework.stereotype.Service;
 
 @Service
 public class HorarioService {
@@ -21,7 +25,9 @@ public class HorarioService {
 	
 	@Transactional
 	public List<Horario> getAll() {
-		return horarioRepository.findAll();
+		List<Horario> sortedList = horarioRepository.findAll();
+		Collections.sort(sortedList);
+		return sortedList;
 	}
 	
 	@Transactional

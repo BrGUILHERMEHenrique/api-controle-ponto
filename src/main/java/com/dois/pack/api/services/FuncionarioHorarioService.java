@@ -25,12 +25,14 @@ public class FuncionarioHorarioService {
 	
 	@Transactional
 	public List<FuncionarioHorario> getWithIdFuncionario(Integer idFuncionario) {
-		return funcionarioHorarioRepository.getWithIdFuncionario(idFuncionario);
+		List<FuncionarioHorario> sortedList = funcionarioHorarioRepository.getWithIdFuncionario(idFuncionario);
+		return sortedList;
 	}
 	
 	@Transactional
 	public List<FuncionarioHorario> getAll() {
-		return funcionarioHorarioRepository.findAll();
+		List<FuncionarioHorario> sortedList = funcionarioHorarioRepository.findAll();
+		return sortedList;
 	}
 	
 	@Transactional

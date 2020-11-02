@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dois.pack.api.exceptions.DiaForaDeVigenciaException;
 import com.dois.pack.api.models.Apontamento;
 import com.dois.pack.api.models.Funcionario;
 import com.dois.pack.api.models.FuncionarioHorario;
@@ -112,7 +113,7 @@ public class ApontamentoService {
 	}
 
 	@Transactional
-	public Apontamento create(Apontamento apontamento) {
+	public Apontamento create(Apontamento apontamento) throws DiaForaDeVigenciaException {
 		System.out.println("Apontamento: " + apontamento);
 		Integer idHorario = funcionarioHorarioRepository.getIdHorario(apontamento.getFuncionario().getId(),
 				apontamento.getData());
@@ -140,6 +141,8 @@ public class ApontamentoService {
 
 			calculateHours(apontamento, horarioDetalhe);
 
+		} else {
+			throw new DiaForaDeVigenciaException();
 		}
 
 		return apontamentoRepository.save(apontamento);
