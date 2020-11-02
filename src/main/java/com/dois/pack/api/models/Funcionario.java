@@ -15,6 +15,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 
 @Entity
 @Table(name = "funcionario")
@@ -51,6 +54,7 @@ public class Funcionario implements Serializable {
 	
 	@OneToOne
 	@JoinColumn(name = "id_empresa", foreignKey = @ForeignKey(name="Não_pode_Excluir_a_Empresa_Antes_De_Excluir_as_Relações"))
+	@Cascade(value = {CascadeType.MERGE})
 	private Empresa idEmpresa;
 
 	public Funcionario() {
