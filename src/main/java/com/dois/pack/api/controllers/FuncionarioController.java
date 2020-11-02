@@ -2,7 +2,6 @@ package com.dois.pack.api.controllers;
 
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -53,7 +52,7 @@ public class FuncionarioController {
 	
 	@ApiOperation("Retorna uma lista de funcionário baseando-se no id da empresa correspondente")
 	@GetMapping(path="/empresa/{idEmpresa}")
-	public ResponseEntity<List<Funcionario>> getWithEmpresa (Integer idEmpresa) {
+	public ResponseEntity<List<Funcionario>> getWithEmpresa (@PathVariable Integer idEmpresa) {
 		return ResponseEntity.ok(funcionarioService.getWithIdEmpresa(idEmpresa));
 	}
 
