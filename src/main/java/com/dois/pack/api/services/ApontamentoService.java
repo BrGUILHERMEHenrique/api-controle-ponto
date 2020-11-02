@@ -20,6 +20,7 @@ import com.dois.pack.api.models.HorarioDetalhes;
 import com.dois.pack.api.models.ModelObjGet;
 import com.dois.pack.api.repositorys.ApontamentoRepository;
 import com.dois.pack.api.repositorys.FuncionarioHorarioRepository;
+import com.dois.pack.api.repositorys.FuncionarioRepository;
 import com.dois.pack.api.repositorys.HorarioDetalhesRepository;
 
 @Service
@@ -33,6 +34,9 @@ public class ApontamentoService {
 
 	@Autowired
 	HorarioDetalhesRepository horarioDetalhesRepository;
+	
+	@Autowired
+	FuncionarioRepository funcionarioRepository;
 
 	@Transactional
 	public List<Apontamento> getAll() {
@@ -42,6 +46,7 @@ public class ApontamentoService {
 	@Transactional
 	public List<Apontamento> getAllDays(ModelObjGet modelObj) {
 		Integer idFuncionario = modelObj.getIdFuncionario();
+		Funcionario funcionario = funcionarioRepository.findById(modelObj.getIdFuncionario()).get();
 		LocalDate dataInicial = modelObj.getDataInicial();
 		LocalDate dataFinal = modelObj.getDataFinal();
 		List<Apontamento> apontamentosApurados = apontamentoRepository.getbyIdFuncionario(idFuncionario);
@@ -78,6 +83,7 @@ public class ApontamentoService {
 
 					System.out.println("Horario Detalhes: " + horarioDetalhe.getHorario().getDescHorario());
 					apontamento2.setHorarioDetalhes(horarioDetalhe);
+					apontamento2.setFuncionario(funcionario);
 
 					calculateHours(apontamento2, horarioDetalhe);
 				}
@@ -112,21 +118,22 @@ public class ApontamentoService {
 		Integer idHorario = funcionarioHorarioRepository.getIdHorario(apontamento.getFuncionario().getId(),
 				apontamento.getData());
 		Integer idFuncionario = apontamento.getFuncionario().getId();
+		Integer qtdHorarios;
+		FuncionarioHorario funcionarioHorario;
+		Period period;
+		Integer result;
+		HorarioDetalhes horarioDetalhe;
 
 		if (idHorario != null) {
-			Integer qtdHorarios = horarioDetalhesRepository.getCount(idHorario);
-			FuncionarioHorario funcionarioHorario = funcionarioHorarioRepository.getFuncionario(idFuncionario,
+			qtdHorarios = horarioDetalhesRepository.getCount(idHorario);
+			funcionarioHorario = funcionarioHorarioRepository.getFuncionario(idFuncionario,
 					idHorario, apontamento.getData());
 
-			LocalDate vigenciaInicial = LocalDate.of(funcionarioHorario.getVigenciaInicial().getYear(),
-					funcionarioHorario.getVigenciaInicial().getMonth(),
-					funcionarioHorario.getVigenciaInicial().getDayOfMonth());
+			period = Period.between(funcionarioHorario.getVigenciaInicial(), apontamento.getData());
 
-			Period period = Period.between(vigenciaInicial, apontamento.getData());
+			result = calculateResult(period.getDays(), funcionarioHorario.getCodigoInicial(), qtdHorarios);
 
-			Integer result = calculateResult(period.getDays(), funcionarioHorario.getCodigoInicial(), qtdHorarios);
-
-			HorarioDetalhes horarioDetalhe = horarioDetalhesRepository.getWithCodigoDia(result, idHorario);
+			horarioDetalhe = horarioDetalhesRepository.getWithCodigoDia(result, idHorario);
 
 			apontamento.setHorarioDetalhes(horarioDetalhe);
 
@@ -153,28 +160,24 @@ public class ApontamentoService {
 	}
 
 	private Integer calculateAccount(Apontamento apontamento, HorarioDetalhes horarioDetalhe) {
-		int durationHours = getHour(apontamento.getEntrada1(), apontamento.getSaida1());
-		int durationMinutes = getMinute(apontamento.getEntrada1(), apontamento.getSaida1());
-		int hoursToMinutes = hoursToMinutes(durationHours, durationMinutes);
-		System.out.println("Horas * 60: " + (hoursToMinutes + durationMinutes));
+		int durationHours = apontamento.getHour(apontamento.getEntrada1(), apontamento.getSaida1());
+		int durationMinutes = apontamento.getMinute(apontamento.getEntrada1(), apontamento.getSaida1());
+		int hoursToMinutes = apontamento.hoursToMinutes(durationHours, durationMinutes);
 
-		int durationHour2 = getHour(apontamento.getEntrada2(), apontamento.getSaida2());
-		int durationMinutes2 = getMinute(apontamento.getEntrada2(), apontamento.getSaida2());
-		int hoursToMinutes2 = hoursToMinutes(durationHour2, durationMinutes2);
-		System.out.println("Horas * 60 2 : " + (hoursToMinutes2 + durationMinutes2));
+		int durationHour2 = apontamento.getHour(apontamento.getEntrada2(), apontamento.getSaida2());
+		int durationMinutes2 = apontamento.getMinute(apontamento.getEntrada2(), apontamento.getSaida2());
+		int hoursToMinutes2 = apontamento.hoursToMinutes(durationHour2, durationMinutes2);
 
-		int durationHourHD = getHour(horarioDetalhe.getEntrada1(), horarioDetalhe.getSaida1());
-		int durationMinutesHD = getMinute(horarioDetalhe.getEntrada1(), horarioDetalhe.getSaida1());
-		int hoursToMinutesHD = hoursToMinutes(durationHourHD, durationMinutesHD);
-		System.out.println("Horas * 60 3 : " + (hoursToMinutesHD + durationMinutesHD));
+		int durationHourHD = apontamento.getHour(horarioDetalhe.getEntrada1(), horarioDetalhe.getSaida1());
+		int durationMinutesHD = apontamento.getMinute(horarioDetalhe.getEntrada1(), horarioDetalhe.getSaida1());
+		int hoursToMinutesHD = apontamento.hoursToMinutes(durationHourHD, durationMinutesHD);
 
-		int durationHourHD2 = getHour(horarioDetalhe.getEntrada2(), horarioDetalhe.getSaida2());
-		int durationMinutesHD2 = getMinute(horarioDetalhe.getEntrada2(), horarioDetalhe.getSaida2());
-		int hoursToMinutesHD2 = hoursToMinutes(durationHourHD2, durationMinutesHD2);
-		System.out.println("Horas * 60 4: " + (hoursToMinutesHD2 + durationMinutesHD2));
+		int durationHourHD2 = apontamento.getHour(horarioDetalhe.getEntrada2(), horarioDetalhe.getSaida2());
+		int durationMinutesHD2 = apontamento.getMinute(horarioDetalhe.getEntrada2(), horarioDetalhe.getSaida2());
+		int hoursToMinutesHD2 = apontamento.hoursToMinutes(durationHourHD2, durationMinutesHD2);
 
-		int horas = sumDurations(hoursToMinutes, hoursToMinutes2);
-		int horasHD = sumDurations(hoursToMinutesHD, hoursToMinutesHD2);
+		int horas = apontamento.sumDurations(hoursToMinutes, hoursToMinutes2);
+		int horasHD = apontamento.sumDurations(hoursToMinutesHD, hoursToMinutesHD2);
 
 		int hora = horas / 60;
 		int minuto = horas % 60;
@@ -194,21 +197,7 @@ public class ApontamentoService {
 
 	}
 
-	private int getMinute(LocalTime entrada, LocalTime saida) {
-		return saida.getMinute() - entrada.getMinute();
-	}
 
-	private int getHour(LocalTime entrada, LocalTime saida) {
-		return saida.getHour() - entrada.getHour();
-	}
-
-	private int sumDurations(int duration1, int duration2) {
-		return duration1 + duration2;
-	}
-
-	private int hoursToMinutes(int hours, int minutes) {
-		return (hours * 60) + minutes;
-	}
 
 	private void verifyHours(Apontamento apontamento, int horas) {
 		System.out.println("Horas: " + horas);
@@ -242,18 +231,21 @@ public class ApontamentoService {
 	}
 
 	public boolean verifyFolga(HorarioDetalhes horarioDetalhe, Apontamento apontamento) {
-		int durationHours = getHour(apontamento.getEntrada1(), apontamento.getSaida1());
-		int durationMinutes = getMinute(apontamento.getEntrada1(), apontamento.getSaida1());
-		int hoursToMinutes = hoursToMinutes(durationHours, durationMinutes);
+		int durationHours = apontamento.getHour(apontamento.getEntrada1(), apontamento.getSaida1());
+		int durationMinutes = apontamento.getMinute(apontamento.getEntrada1(), apontamento.getSaida1());
+		int hoursToMinutes = apontamento.hoursToMinutes(durationHours, durationMinutes);
 
-		int durationHours2 = getHour(apontamento.getEntrada2(), apontamento.getSaida2());
-		int durationMinutes2 = getMinute(apontamento.getEntrada2(), apontamento.getSaida2());
-		int hoursToMinutes2 = hoursToMinutes(durationHours2, durationMinutes2);
+		int durationHours2 = apontamento.getHour(apontamento.getEntrada2(), apontamento.getSaida2());
+		int durationMinutes2 = apontamento.getMinute(apontamento.getEntrada2(), apontamento.getSaida2());
+		int hoursToMinutes2 = apontamento.hoursToMinutes(durationHours2, durationMinutes2);
+		
+		int hora;
+		int minuto;
 
-		int horas = sumDurations(hoursToMinutes, hoursToMinutes2);
+		int horas = apontamento.sumDurations(hoursToMinutes, hoursToMinutes2);
 		if (horarioDetalhe.getFolga()) {
-			int hora = horas / 60;
-			int minuto = horas % 60;
+			hora = horas / 60;
+			minuto = horas % 60;
 			LocalTime horaTrabalhadaFolga = LocalTime.of(hora, minuto);
 			apontamento.setSaldoHe(horaTrabalhadaFolga);
 			apontamento.setTotalTrabalhado(horaTrabalhadaFolga);
@@ -271,7 +263,6 @@ public class ApontamentoService {
 		if (apontamentoAtualizado != null) {
 			if (apontamento.getEntrada1() != dataZerada) {
 				apontamentoAtualizado.setEntrada1(apontamento.getEntrada1());
-				System.out.println("apontamento atualizado: " + apontamento.getEntrada1());
 			}
 			if (apontamento.getEntrada2() != dataZerada) {
 				apontamentoAtualizado.setEntrada2(apontamento.getEntrada2());
@@ -283,7 +274,6 @@ public class ApontamentoService {
 				apontamentoAtualizado.setSaida2(apontamento.getSaida2());
 			}
 			Integer contaHoras = calculateAccount(apontamentoAtualizado, apontamentoAtualizado.getHorarioDetalhes());
-			System.out.println("Conta horas put: " + contaHoras);
 			verifyHours(apontamentoAtualizado, contaHoras);
 
 		}
