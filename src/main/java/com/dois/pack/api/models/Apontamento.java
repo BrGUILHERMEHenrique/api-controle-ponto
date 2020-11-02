@@ -18,6 +18,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @Entity
 @Table(name="apontamento", indexes = {
 		@Index(name="A_mesma_data_não_pode_se_repetir", columnList = "id_funcionario, data", unique=true)
@@ -34,12 +37,14 @@ public class Apontamento implements Serializable, Comparable<Apontamento> {
 	@NotNull
 	@OneToOne
 	@JoinColumn(name="id_funcionario", foreignKey = @ForeignKey(name="Não_pode_Excluir_o_Funcionário_Antes_De_Excluir_as_relações_do_mesmo"))
+	@Cascade(value = {CascadeType.MERGE})
 	private Funcionario funcionario;
 
 	
 	@NotNull
 	@OneToOne
 	@JoinColumn(name="id_horarioDetalhes", foreignKey = @ForeignKey(name="Não_pode_Excluir_os_Detalhes_de_Horário_Antes_De_Excluir_as_relações"))
+	@Cascade(value = {CascadeType.MERGE})
 	private HorarioDetalhes horarioDetalhes;
 	
 	@NotNull

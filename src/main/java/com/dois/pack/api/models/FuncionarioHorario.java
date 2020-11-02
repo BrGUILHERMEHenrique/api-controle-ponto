@@ -2,8 +2,8 @@ package com.dois.pack.api.models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -15,6 +15,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+
+
+
+
+
 @Entity
 @Table(name = "funcionario_horario")
 public class FuncionarioHorario implements Serializable {
@@ -24,10 +30,12 @@ public class FuncionarioHorario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
+	@Cascade(value = {CascadeType.MERGE})
 	private Integer id;
  
     @ManyToOne
     @JoinColumn(name = "id_funcionario", foreignKey = @ForeignKey(name="Não_pode_Excluir_o_Funcionário_Antes_De_Excluir_as_relações_do_mesmo"))
+    @Cascade(value = {CascadeType.MERGE})
     private Funcionario idFuncionario;
  
     @ManyToOne
