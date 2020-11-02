@@ -67,7 +67,7 @@ public class ApontamentoService {
 				idHorario = funcionarioHorarioRepository.getIdHorario(idFuncionario, data);
 				System.out.println("idHorario: " + idHorario);
 				apontamento2 = new Apontamento();
-				apontamento2.setFuncionario(new Funcionario(idFuncionario));
+				apontamento2.setFuncionario(funcionario);
 				apontamento2.setData(data);
 				if (idHorario != null) {
 					qtdHorarios = horarioDetalhesRepository.getCount(idHorario);
@@ -83,8 +83,7 @@ public class ApontamentoService {
 
 					System.out.println("Horario Detalhes: " + horarioDetalhe.getHorario().getDescHorario());
 					apontamento2.setHorarioDetalhes(horarioDetalhe);
-					apontamento2.setFuncionario(funcionario);
-
+					
 					calculateHours(apontamento2, horarioDetalhe);
 				}
 				apontamentosApurados.add(apontamento2);
