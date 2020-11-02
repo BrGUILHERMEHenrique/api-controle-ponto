@@ -17,7 +17,7 @@ public interface FuncionarioHorarioRepository extends JpaRepository<FuncionarioH
 			nativeQuery=true)
 	List<FuncionarioHorario> getWithIdFuncionario(Integer idFuncionario);
 	
-	@Query(value="SELECT id_horario FROM funcionario_horario WHERE funcionario_horario.id_funcionario= :idFuncionario AND :data >= vigencia_inicial AND :data <= vigencia_final", 
+	@Query(value="SELECT id_horario FROM funcionario_horario WHERE funcionario_horario.id_funcionario = :idFuncionario AND :data >=  vigencia_inicial AND :data <= vigencia_final", 
 				nativeQuery=true)
 	Integer getIdHorario(Integer idFuncionario, LocalDate data);
 	

@@ -90,6 +90,22 @@ public class Apontamento implements Serializable, Comparable<Apontamento> {
 		}
 		return aux;
 	}
+	
+	public int getMinute(LocalTime entrada, LocalTime saida) {
+		return saida.getMinute() - entrada.getMinute();
+	}
+
+	public int getHour(LocalTime entrada, LocalTime saida) {
+		return saida.getHour() - entrada.getHour();
+	}
+
+	public int sumDurations(int duration1, int duration2) {
+		return duration1 + duration2;
+	}
+
+	public int hoursToMinutes(int hours, int minutes) {
+		return (hours * 60) + minutes;
+	}
 	@Override
 	public int compareTo(Apontamento o) {
 		if(this.data != o.getData()) {
