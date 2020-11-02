@@ -64,8 +64,7 @@ public class FuncionarioHorarioController {
 	}
 
 	@ApiOperation("Permite apagar uma relação Funcionário-Horário")
-	@DeleteMapping(path="/{id}", consumes= {MediaType.APPLICATION_JSON_VALUE},
-										produces= {MediaType.APPLICATION_JSON_VALUE})
+	@DeleteMapping(path="/{id}")
 	public ResponseEntity<String> delete(@PathVariable Integer id) {
 		boolean response = funcionarioHorarioService.delete(id);
 		if(response) {		

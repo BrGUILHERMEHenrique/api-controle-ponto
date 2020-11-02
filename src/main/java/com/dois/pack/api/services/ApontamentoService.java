@@ -114,9 +114,10 @@ public class ApontamentoService {
 
 	@Transactional
 	public Apontamento create(Apontamento apontamento) {
-
+		System.out.println("Apontamento: " + apontamento);
 		Integer idHorario = funcionarioHorarioRepository.getIdHorario(apontamento.getFuncionario().getId(),
 				apontamento.getData());
+		System.out.println("Horario: " + idHorario);
 		Integer idFuncionario = apontamento.getFuncionario().getId();
 		Integer qtdHorarios;
 		FuncionarioHorario funcionarioHorario;
@@ -134,6 +135,7 @@ public class ApontamentoService {
 			result = calculateResult(period.getDays(), funcionarioHorario.getCodigoInicial(), qtdHorarios);
 
 			horarioDetalhe = horarioDetalhesRepository.getWithCodigoDia(result, idHorario);
+
 
 			apontamento.setHorarioDetalhes(horarioDetalhe);
 
