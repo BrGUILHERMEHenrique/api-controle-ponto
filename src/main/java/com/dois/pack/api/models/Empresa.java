@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "empresa")
-public class Empresa implements Serializable {
+public class Empresa implements Serializable, Comparable<Empresa> {
 	
 	private static final long serialVersionUID = 2103677445935061431L;
 	
@@ -53,6 +53,11 @@ public class Empresa implements Serializable {
 		super();
 		this.id = id;
 	}
+	
+	@Override
+	public int compareTo(Empresa o) {
+		return this.razaoSocial.compareTo(o.getRazaoSocial());
+	}
 
 	public String getCodEmpresa() {
 		return codEmpresa;
@@ -81,5 +86,7 @@ public class Empresa implements Serializable {
 	public Integer getId() {
 		return id;
 	}
+
+
 	
 }

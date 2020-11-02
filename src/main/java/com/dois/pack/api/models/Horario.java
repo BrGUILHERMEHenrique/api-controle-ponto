@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "horario")
-public class Horario implements Serializable{
+public class Horario implements Serializable, Comparable<Horario>{
 	
 	private static final long serialVersionUID = 2103677445935061431L;
 	
@@ -37,6 +37,7 @@ public class Horario implements Serializable{
 	}
 	
 	
+	
 
 	public Horario(Integer id, Integer codigoHorario, String descHorario) {
 		super();
@@ -51,6 +52,11 @@ public class Horario implements Serializable{
 		this.id = id;
 	}
 
+	@Override
+	public int compareTo(Horario o) {
+		
+		return this.codigoHorario.compareTo(o.getCodigoHorario());
+	}
 
 
 	public Integer getCodigoHorario() {
@@ -71,6 +77,10 @@ public class Horario implements Serializable{
 
 	public Integer getId() {
 		return id;
-	}	
+	}
+
+
+
+	
 	
 }

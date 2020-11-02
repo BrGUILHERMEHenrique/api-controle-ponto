@@ -23,7 +23,7 @@ import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "funcionario_horario")
-public class FuncionarioHorario implements Serializable {
+public class FuncionarioHorario implements Serializable, Comparable<FuncionarioHorario> {
 	
 	private static final long serialVersionUID = 2103677445935061431L;
 	
@@ -53,6 +53,11 @@ public class FuncionarioHorario implements Serializable {
     @NotNull
     @Column (name = "vigencia_final")
     private LocalDate vigenciaFinal;
+    
+    @Override
+	public int compareTo(FuncionarioHorario o) {
+		return this.codigoInicial.compareTo(o.getCodigoInicial());
+	}
 
 	public Funcionario getIdFuncionario() {
 		return idFuncionario;
@@ -97,5 +102,7 @@ public class FuncionarioHorario implements Serializable {
 	public Integer getId() {
 		return id;
 	}
+
+	
 
 }

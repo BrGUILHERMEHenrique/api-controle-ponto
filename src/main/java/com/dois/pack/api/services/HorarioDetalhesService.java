@@ -1,6 +1,7 @@
 package com.dois.pack.api.services;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -46,12 +47,16 @@ public class HorarioDetalhesService {
 	}
 	@Transactional
 	public List<HorarioDetalhes> getAll() {
-		return horarioDetalhesRepository.findAll();
+		List<HorarioDetalhes> sortedList = horarioDetalhesRepository.findAll();
+		Collections.sort(sortedList);
+		return sortedList;
 	}
 	
 	@Transactional
 	public List<HorarioDetalhes> getAllIdHorario(Integer idHorario){
-		return horarioDetalhesRepository.getAllWithIdHorario(idHorario);
+		List<HorarioDetalhes> sortedList = horarioDetalhesRepository.getAllWithIdHorario(idHorario);
+		Collections.sort(sortedList);
+		return sortedList;
 	}
 	
 	@Transactional

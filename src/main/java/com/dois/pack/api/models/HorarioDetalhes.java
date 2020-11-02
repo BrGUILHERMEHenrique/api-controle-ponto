@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name="horario_detalhes", 
 			indexes = {@Index(name = "Esse_código_de_dia_já_existe", columnList = "codigo_dia, id_horario", unique=true)})
-public class HorarioDetalhes implements Serializable {
+public class HorarioDetalhes implements Serializable, Comparable<HorarioDetalhes> {
 	
 	private static final long serialVersionUID = 2103677445935061431L;
 	
@@ -59,6 +59,11 @@ public class HorarioDetalhes implements Serializable {
 
 	@Column(name = "saida_2")
 	private LocalTime saida2;
+	
+	@Override
+	public int compareTo(HorarioDetalhes o) {
+		return this.codigoDia.compareTo(o.getCodigoDia());
+	}
 
 	public Horario getHorario() {
 		return horario;
@@ -119,6 +124,8 @@ public class HorarioDetalhes implements Serializable {
 	public Integer getId() {
 		return id;
 	}
+
+
 	
 	
 }

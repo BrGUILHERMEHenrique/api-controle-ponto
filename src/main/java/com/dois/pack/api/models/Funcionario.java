@@ -21,7 +21,7 @@ import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "funcionario")
-public class Funcionario implements Serializable {
+public class Funcionario implements Serializable, Comparable<Funcionario> {
 
 	private static final long serialVersionUID = 2103677445935061431L;
 
@@ -80,6 +80,11 @@ public class Funcionario implements Serializable {
 		super();
 		this.id = id;
 	}
+	
+	@Override
+	public int compareTo(Funcionario o) {
+		return this.nome.compareTo(o.getNome());
+	}
 
 
 
@@ -134,5 +139,8 @@ public class Funcionario implements Serializable {
 	public Integer getId() {
 		return id;
 	}
+
+
+
 
 }

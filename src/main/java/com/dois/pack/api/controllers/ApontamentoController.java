@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dois.pack.api.exceptions.DiaForaDeVigenciaException;
 import com.dois.pack.api.models.Apontamento;
 import com.dois.pack.api.models.ModelObjGet;
 
@@ -33,7 +34,7 @@ public class ApontamentoController {
 	@ApiOperation("Permite Cadastrar um novo apontamento")
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, 
 				produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<Apontamento> create(@RequestBody Apontamento apontamento) {
+	public ResponseEntity<Apontamento> create(@RequestBody Apontamento apontamento) throws DiaForaDeVigenciaException {
 		return ResponseEntity.status(HttpStatus.CREATED).body(apontamentoService.create(apontamento));
 	}
 	
