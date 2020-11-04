@@ -90,8 +90,8 @@ public class ApontamentoService {
 				apontamentosApurados.add(apontamento2);
 			}
 		}
-		teste = apontamento.dataAntesOuDepois(apontamentosApurados, dataInicial, dataFinal);
-		Collections.sort(teste);
+		sortedList = apontamento.dataAntesOuDepois(apontamentosApurados, dataInicial, dataFinal);
+		Collections.sort(sortedList);
 		return teste;
 	}
 
