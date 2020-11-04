@@ -60,7 +60,7 @@ public class ApontamentoService {
 		Integer qtdHorarios;
 		Period period;
 		Integer idHorario;
-		List<Apontamento> teste = new ArrayList<Apontamento>();
+		List<Apontamento> sortedList = new ArrayList<Apontamento>();
 		for (int dias = 1; dias <= dataFinal.getDayOfMonth(); dias++) {
 			data = LocalDate.of(dataFinal.getYear(), dataFinal.getMonth(), dias);
 			if (!apontamento.DataExiste(apontamentosApurados, data)) {
@@ -92,7 +92,7 @@ public class ApontamentoService {
 		}
 		sortedList = apontamento.dataAntesOuDepois(apontamentosApurados, dataInicial, dataFinal);
 		Collections.sort(sortedList);
-		return teste;
+		return sortedList;
 	}
 
 	@Transactional
